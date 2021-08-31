@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Button, Card, Form, Input, Row, Col } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import Containers from "../unstated-containers/containers";
@@ -7,8 +7,10 @@ import withContainerProvider from "../unstated-containers/provider";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../stores/actions";
+import currencyPic from "../static/images/bank-notes-cropped.jpg";
 
-const loginCardFormStyle = { minWidth:400, maxWidth: "40%", margin:"0 auto", marginTop: "20%" };
+const loginCardFormStyle = { minWidth: 300, maxWidth: "40%", margin: "0 auto", marginTop: "20%" };
+const loginLayoutStyle = { height: "100%" };
 
 const { authContainer } = Containers
 
@@ -30,7 +32,6 @@ const LoginForm = ({ onFinish }) => {
                     <Form.Item name="password" label="Password:" required={true}>
                         <Input type="password" />
                     </Form.Item>
-
                 </Col>
             </Row>
             <Row>
@@ -48,30 +49,45 @@ const Login = (props) => {
 
     const dispatch = useDispatch();
 
-    const login = async(username, password) => {
-        try{
-            
-        }catch(e){
-            
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    const login = async (username, password) => {
+        try {
+
+        } catch (e) {
+
         }
     }
 
+    useEffect(()=>{
+        setWindowWidth(window.innerWidth);
+    })
 
-    const onFinish = async(values) => {
-        try{
+
+    const onFinish = async (values) => {
+        try {
             await login(values?.username, values?.password);
             dispatch(setLogin(true));
-        }catch(e){
+        } catch (e) {
             dispatch(setLogin(false));
         }
     }
 
     return (
-        <div>
-            <Card title={null} style={loginCardFormStyle}>
-                <LoginForm onFinish={onFinish}/>
-            </Card>
-        </div>
+        <Row style={loginLayoutStyle}>
+            { (windowWidth >= 500)  &&<Col span={10}>
+                <Row align="start" style={loginLayoutStyle}>
+                    <img height={"100%"} style={{ objectFit: "cover" }} src={currencyPic} />
+                </Row>
+            </Col>}
+            <Col span={14}>
+                <Row>
+                <Card title={null} style={loginCardFormStyle}>
+                    <LoginForm onFinish={onFinish} />
+                </Card>
+                </Row>
+            </Col>
+        </Row>
     );
 }
 
