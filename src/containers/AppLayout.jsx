@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const { Content, Sider, Header } = Layout;
 
@@ -16,35 +17,35 @@ export default (Component) => {
 
         return (
 
-        <Layout style={mainLayoutStyle}>
-            <Header>
+            <Layout style={mainLayoutStyle}>
+                <Header>
 
-            </Header>
-            <Layout>
-                {(window.innerWidth > 991) && <Sider>
-                    <Menu activeKey ={activeKey}>
-                        <MenuItem icon={"some-icon"} title="Dashboard" key="/dashboard">
-                            <NavLink to="/dashboard">
-                                Dashboard
-                            </NavLink>
-                        </MenuItem>
-                        <MenuItem icon={"some-icon"} title="Wallets" key="/dashboard/wallets">
-                            <NavLink to="/dashboard/wallets">
-                                Wallets
-                            </NavLink>
-                        </MenuItem>
-                        <MenuItem icon={"some-icon"} title="Transactions" key="/dashboard/transactions">
-                            <NavLink to="/dashboard/transactions">
-                                Transactions
-                            </NavLink>
-                        </MenuItem>
-                    </Menu>
-                </Sider>}
-                <Content>
-                    <Component {...{ props }} />
-                </Content>
+                </Header>
+                <Layout>
+                    {(window.innerWidth > 991) && <Sider>
+                        <Menu activeKey={activeKey}>
+                            <MenuItem icon={<FontAwesomeIcon icon={["fa", "home"]} />}  title="Dashboard" key="/dashboard">
+                                <NavLink to="/dashboard">
+                                    &nbsp;Dashboard
+                                </NavLink>
+                            </MenuItem>
+                            <MenuItem icon={<FontAwesomeIcon icon={["fa", "wallet"]} />} title="Wallets" key="/dashboard/wallets">
+                                <NavLink to="/dashboard/wallets">
+                                    &nbsp;Wallets
+                                </NavLink>
+                            </MenuItem>
+                            <MenuItem icon={<FontAwesomeIcon icon={["fa", "money-check"]} />} title="Transactions" key="/dashboard/transactions">
+                                <NavLink to="/dashboard/transactions">
+                                    &nbsp;Transactions
+                                </NavLink>
+                            </MenuItem>
+                        </Menu>
+                    </Sider>}
+                    <Content>
+                        <Component {...{ props }} />
+                    </Content>
+                </Layout>
             </Layout>
-        </Layout>
-    );
-                }
+        );
+    }
 }

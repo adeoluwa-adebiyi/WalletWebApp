@@ -1,4 +1,5 @@
 import { SET_LOGIN } from "./actions";
+import { AUTH_TOKEN_KEY } from "../config/data";
 
 const authReducer = (state = { loggedIn: false }, action) => {
 
@@ -11,7 +12,7 @@ const authReducer = (state = { loggedIn: false }, action) => {
             }
 
         default:
-            return state
+            return {...state, loggedIn: sessionStorage.getItem(AUTH_TOKEN_KEY)? true : false} 
     }
 }
 

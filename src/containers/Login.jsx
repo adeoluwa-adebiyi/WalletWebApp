@@ -7,7 +7,9 @@ import withContainerProvider from "../unstated-containers/provider";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../stores/actions";
+import * as AuthApi from "../apis/auth";
 import currencyPic from "../static/images/bank-notes-cropped.jpg";
+import { AUTH_TOKEN_KEY } from "../config/data";
 
 const loginCardFormStyle = { minWidth: 300, maxWidth: "40%", margin: "0 auto", marginTop: "20%" };
 const loginLayoutStyle = { height: "100%" };
@@ -53,9 +55,15 @@ const Login = (props) => {
 
     const login = async (username, password) => {
         try {
-
+            const { authToken } = await AuthApi.login(username, password);
+            if(authToken){
+                sessionStorage.setItem(AUTH_TOKEN_KEY, authToken);
+                dispatch(setLogin(true));
+            }else{
+                throw Error("Login failed. Try again");
+            }
         } catch (e) {
-
+            throw e;
         }
     }
 
@@ -67,7 +75,6 @@ const Login = (props) => {
     const onFinish = async (values) => {
         try {
             await login(values?.username, values?.password);
-            dispatch(setLogin(true));
         } catch (e) {
             dispatch(setLogin(false));
         }
