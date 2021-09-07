@@ -3,6 +3,7 @@ import { Layout, Menu } from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AppNav from "../components/AppNav";
 
 const { Content, Sider, Header } = Layout;
 
@@ -18,9 +19,7 @@ export default (Component) => {
         return (
 
             <Layout style={mainLayoutStyle}>
-                <Header>
-
-                </Header>
+                <AppNav/>
                 <Layout>
                     {(window.innerWidth > 991) && <Sider>
                         <Menu activeKey={activeKey}>

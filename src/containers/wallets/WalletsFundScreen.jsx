@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Card, PageHeader } from "antd";
 import WalletFundRequestForm from "../../components/WalletFundRequestForm";
 import { Container } from "../../components/Container";
@@ -17,41 +17,42 @@ const WalletFundScreen = (props) => {
 
     const PaymentModal = (props) => {
 
+        const { startPayment } = props;
+
         const initializePayment = usePaystackPayment(paymentConfig);
 
         const onSuccess = (reference) => {
             // Implementation for whatever you want to do with reference and after success call.
-            console.log("Payment Successful");
-            console.log(reference);
+            setPaymentVisible(false);
         };
 
         // you can call this function anything
         const onClose = () => {
             // implementation for  whatever you want to do when the Paystack dialog closed.
-            console.log('closed');
             setPaymentVisible(false);
         }
 
-        useEffect(()=>{
-            initializePayment(onSuccess, onClose);
-        },[]);
+        useEffect(() => {
+            if (startPayment) {
+                initializePayment(onSuccess, onClose);
+            }
+        });
 
         return (
-            <>
-            </>
+            <div />
         )
     }
 
 
-    
-  
+
+
     const makePayment = (reference, email, amount) => {
         // you can call this function anything
 
         const paymentDetails = {
             reference,
             email,
-            amount,
+            amount: amount * 100,
             publicKey: config.PAYSTACK_PUB_KEY,
         };
         setPaymentConfig(paymentDetails);
@@ -61,25 +62,24 @@ const WalletFundScreen = (props) => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleFundRequest = async(values) => {
+    const handleFundRequest = async (values) => {
         const { walletId, currency, amount } = values;
-        try{
+        try {
             setIsSubmitting(true);
             const response = await WalletApi.fundWallet(currency, amount);
-            if(response.data._id){
+            if (response.data._id) {
                 const reference = response.data._id;
                 setIsSubmitting(false);
-                makePayment(reference,"akuybe@gmail.com",amount);
+                makePayment(reference, "akuybe@gmail.com", amount);
             }
-        }catch(e){
+        } catch (e) {
             setIsSubmitting(false);
-            console.log(e);
         }
     }
 
     return (
         <Container>
-            {paymentVisible && <PaymentModal/>}
+            {<PaymentModal startPayment={paymentVisible}/>}
             <PageHeader title="Fund Wallet" style={{ paddingLeft: 0 }} />
             <Card title={"Create a Fund Request"} style={{ maxWidth: 400 }}>
                 <WalletFundRequestForm onFinish={handleFundRequest} isSubmitting={isSubmitting} />

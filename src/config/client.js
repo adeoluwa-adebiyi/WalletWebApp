@@ -5,7 +5,7 @@ import { AUTH_TOKEN_KEY } from "./data";
 dotenv.config();
 
 const client = Axios.create({
-    baseURL: process.env.APP_BASE_URL,
+    baseURL: process.env.REACT_APP_APP_BASE_URL,
     // headers: {
     //     Authorization: `Bearer ${sessionStorage.getItem(AUTH_TOKEN_KEY) ?? ""}`
     // }
