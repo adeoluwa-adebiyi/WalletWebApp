@@ -63,14 +63,15 @@ const WalletFundScreen = (props) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleFundRequest = async (values) => {
+        const email = "akuybe@gmail.com";
         const { walletId, currency, amount } = values;
         try {
             setIsSubmitting(true);
-            const response = await WalletApi.fundWallet(currency, amount);
+            const response = await WalletApi.fundWallet(currency, amount, { email });
             if (response.data._id) {
                 const reference = response.data._id;
                 setIsSubmitting(false);
-                makePayment(reference, "akuybe@gmail.com", amount);
+                makePayment(reference, email, amount);
             }
         } catch (e) {
             setIsSubmitting(false);

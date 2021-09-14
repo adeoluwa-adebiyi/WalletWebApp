@@ -13,11 +13,11 @@
 
 import RESTClient from "../config/client";
 
-export const WALLET_FUND_ENDPOINT = "/wallet/wallet/fund";
+export const WALLET_FUND_ENDPOINT = "/wallet/fund";
 
-export const fundWallet = async(currency, amount, client=RESTClient) => {
+export const fundWallet = async(currency, amount, cardDetails, client=RESTClient) => {
     try{
-        const response = await client.post(WALLET_FUND_ENDPOINT, {currency, amount});
+        const response = await client.post(WALLET_FUND_ENDPOINT, {currency, amount, cardDetails});
         return response.data;
     }catch(e){
         throw Error("Wallet fund request failed");
