@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Card, PageHeader } from "antd";
+import { Card } from "antd";
+import { PageHeader } from "../../components/PageHeader";
 import WalletFundRequestForm from "../../components/WalletFundRequestForm";
 import { Container } from "../../components/Container";
 import * as WalletApi from "../../apis/wallet";
@@ -81,7 +82,7 @@ const WalletFundScreen = (props) => {
     return (
         <Container>
             {<PaymentModal startPayment={paymentVisible}/>}
-            <PageHeader title="Fund Wallet" style={{ paddingLeft: 0 }} />
+            <PageHeader title="Fund Wallet"/>
             <Card title={"Create a Fund Request"} style={{ maxWidth: 400 }}>
                 <WalletFundRequestForm onFinish={handleFundRequest} isSubmitting={isSubmitting} />
             </Card>

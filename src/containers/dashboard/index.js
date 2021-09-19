@@ -1,7 +1,11 @@
+import { Col, Table, Row } from "antd";
 import React from "react";
 import { useRouteMatch } from "react-router-dom";
+import BalanceCard from "../../components/BalanceCard";
+import Card from "../../components/Card";
 import { Container } from "../../components/Container";
 import { PageHeader } from "../../components/PageHeader";
+import Wallet from "../../components/Wallet";
 
 const Dashboard = (props) => {
 
@@ -10,6 +14,48 @@ const Dashboard = (props) => {
     return (
         <Container>
             <PageHeader title="Dashboard" />
+            <Row gutter={10}>
+                <Col md={12}>
+                    <Wallet />
+                </Col>
+                <Col md={12}>
+                    <Card title="Exchange Rate" style={{ height: "100%" }}>
+                        <div style={{ height: "100%" }}></div>
+                        {/* <Table style={{borderRadius:"10px"}} dataSource={[]}/> */}
+                    </Card>
+                </Col>
+            </Row>
+            <Row gutter={10}>
+                <Col span={16}>
+                    <Card title="Income" style={{ marginTop: 20 }}>
+                        <Table style={{ borderRadius: "10px" }} columns={[
+                            {
+                                title: "#",
+                                dataIndex: ""
+                            },
+                            {
+                                title: "Name",
+                                dataIndex: ""
+                            },
+                            {
+                                title: "Amount",
+                                dataIndex: ""
+                            },
+                            {
+                                title: "Date",
+                                dataIndex: ""
+                            },
+                        ]} dataSource={[]} />
+                    </Card>
+                </Col>
+
+                <Col span={8}>
+                    <Card title="Payment History" style={{ marginTop: 20, height: "100%" }}>
+                        <div style={{ height: "100%" }}></div>
+                        {/* <Table style={{borderRadius:"10px"}} dataSource={[]}/> */}
+                    </Card>
+                </Col>
+            </Row>
         </Container>
     );
 }

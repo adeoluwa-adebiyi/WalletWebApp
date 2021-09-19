@@ -7,6 +7,7 @@ import AppNav from "../components/AppNav";
 import { withRouter } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import { useHistory } from "react-router-dom";
+import BalanceCard from "../components/BalanceCard";
 
 const { Content, Sider, Header } = Layout;
 
@@ -65,7 +66,6 @@ export default (Component) => {
         }, []);
 
         useEffect(() => {
-            console.log(windowWidth);
         })
 
         return (
@@ -76,9 +76,9 @@ export default (Component) => {
                     {true &&
                         <Sider collapsed={windowWidth < 991} style={{ maxWidth: "300px"}}>
 
-                            <span style={{fontSize:"2em", fontWeight:"bolder", marginLeft: 20}}>SupaPay</span>
+                            <BalanceCard cardStyles={{boxShadow:"1px 3px 10px #ccc"}}/>
 
-                            <Menu style={{ display: "flex", flexDirection: "column", flex:1,height: "90%", alignSelf:"stretch", paddingTop:"10%" }}
+                            <Menu style={{ display: "flex", flexDirection: "column", flex:1, alignSelf:"stretch", height:"80%" }}
                                 activeKey={activeKey}
                                 selectable={true}
                                 defaultSelectedKeys={[activeKey]}>
@@ -108,7 +108,7 @@ export default (Component) => {
 
                         </Sider>}
                     <Content style={contentStyle}>
-                        <AppNav/>
+                        {/* <AppNav/> */}
                         <Component {...{ props, style: { ...contentStyle } }} />
                     </Content>
                 </Layout>
