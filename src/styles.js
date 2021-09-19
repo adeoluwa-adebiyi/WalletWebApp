@@ -3,7 +3,7 @@ export const pageHeaderStyle = {
 }
 
 export const containerStyle = {
-    padding: "16px 24px"
+    padding: "0px 0px 0px 16px"
 }
 
 export const appNavBrandStyle = { 

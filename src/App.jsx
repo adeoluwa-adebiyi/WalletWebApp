@@ -8,12 +8,12 @@ import store from "./stores";
 import "antd/dist/antd.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faWallet, faHome, faMoneyCheck } from '@fortawesome/free-solid-svg-icons';
+import { faWallet, faHome, faMoneyCheck, faSignOutAlt, faCog, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import "./index.css";
 
 const { authContainer } = Containers;
 
-library.add(faWallet, faHome, faMoneyCheck);
+library.add(faWallet, faHome, faMoneyCheck, faSignOutAlt, faCog, faChevronDown);
 
 const App = (props) => {
     return (

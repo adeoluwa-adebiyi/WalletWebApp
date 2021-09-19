@@ -13,7 +13,7 @@
 
 import RESTClient from "../config/client";
 
-export const WALLET_FUND_ENDPOINT = "/wallet/fund";
+export const WALLET_FUND_ENDPOINT = "/wallet/wallet/fund";
 
 export const fundWallet = async(currency, amount, cardDetails, client=RESTClient) => {
     try{
