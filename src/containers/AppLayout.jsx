@@ -8,6 +8,12 @@ import { withRouter } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import { useHistory } from "react-router-dom";
 import BalanceCard from "../components/BalanceCard";
+import withDataProvider from "../components/withDataProvider";
+import { NAIRA_SYMBOL } from "../config/data";
+import { CogOutline, HomeOutline, WalletOutline, CashOutline } from "react-ionicons";
+import { useDispatch } from "react-redux";
+import { fetchUserWalletsAction } from "../stores/actions";
+import { useSelector } from "react-redux";
 
 const { Content, Sider, Header } = Layout;
 
@@ -55,6 +61,21 @@ export default (Component) => {
         const [activeKey, setActiveKey] = useState(history.location.pathname);
         const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+        const [state, setState] = useState({
+            wallets: [{
+                balance: 75000,
+                currencySymbol: NAIRA_SYMBOL
+            }]
+        });
+
+        const dispatch = useDispatch();
+
+        const fetchWallets = async() => {
+            dispatch(fetchUserWalletsAction());
+        }
+
+        const walletsState = useSelector(state=>state.wallets);
+
         useEffect(() => {
             setActiveKey(history.location.pathname);
         }, [history.location.pathname]);
@@ -63,10 +84,16 @@ export default (Component) => {
             window.addEventListener("resize", (event) => {
                 setWindowWidth(window.innerWidth);
             })
+            fetchWallets();
         }, []);
 
-        useEffect(() => {
-        })
+        useEffect(()=>{
+            console.log("WALLET_STATE:");
+            console.log(walletsState);
+        },[walletsState])
+
+
+        const DefaultWalletBalanceCard = withDataProvider(BalanceCard, () => state, (source) => source.wallets[0], (value) => ({ balance: { ...value, currency: "NGN" } }));
 
         return (
 
@@ -74,36 +101,48 @@ export default (Component) => {
                 <AppSiderStyle />
                 <Layout>
                     {true &&
-                        <Sider collapsed={windowWidth < 991} style={{ maxWidth: "300px"}}>
+                        <Sider collapsed={windowWidth < 991} style={{ maxWidth: "300px" }}>
 
-                            <BalanceCard cardStyles={{boxShadow:"1px 3px 10px #ccc"}}/>
+                            <DefaultWalletBalanceCard cardStyles={{ boxShadow: "1px 3px 10px #ccc" }} />
 
-                            <Menu style={{ display: "flex", flexDirection: "column", flex:1, alignSelf:"stretch", height:"80%" }}
+                            <Menu style={{ display: "flex", flexDirection: "column", flex: 1, alignSelf: "stretch", height: "80%", paddingTop:"10%" }}
                                 activeKey={activeKey}
                                 selectable={true}
                                 defaultSelectedKeys={[activeKey]}>
 
-                                <MenuItem icon={<FontAwesomeIcon icon={["fa", "home"]} />} title="Dashboard" key="/dashboard">
+                                <MenuItem icon={<HomeOutline
+                                    // color={'#00000'}
+                                    height="20px"
+                                    width="20px"
+                                />} title="Dashboard" key="/dashboard">
                                     <NavLink to="/dashboard">
                                         Dashboard
                                     </NavLink>
                                 </MenuItem>
-                                <MenuItem icon={<FontAwesomeIcon icon={["fa", "wallet"]} />} title="Wallets" key="/dashboard/wallets">
+                                <MenuItem icon={<WalletOutline
+                                    // color={'#00000'}
+                                    height="20px"
+                                    width="20px"
+                                />} title="Wallets" key="/dashboard/wallets">
                                     <NavLink to="/dashboard/wallets">
                                         Wallets
                                     </NavLink>
                                 </MenuItem>
-                                <MenuItem icon={<FontAwesomeIcon icon={["fa", "money-check"]} />} title="Transactions" key="/dashboard/transactions">
+                                <MenuItem icon={<CashOutline
+                                    // color={'#00000'}
+                                    height="20px"
+                                    width="20px"
+                                />} title="Transactions" key="/dashboard/transactions">
                                     <NavLink to="/dashboard/transactions">
                                         Transactions
                                     </NavLink>
                                 </MenuItem>
-                                <div style={{ display: "flex", flexDirection: "column", flex: 10, justifyContent: "flex-end", alignSelf: "stretch"}}>
+                                <div style={{ display: "flex", flexDirection: "column", flex: 10, justifyContent: "flex-end", alignSelf: "stretch" }}>
                                     <MenuItem icon={<FontAwesomeIcon icon={["fa", "sign-out-alt"]} />} title="Sign out">
-                                        Signout                                    
+                                        Signout
                                     </MenuItem>
                                 </div>
-                                
+
                             </Menu>
 
                         </Sider>}

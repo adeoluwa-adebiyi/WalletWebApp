@@ -1,19 +1,8 @@
-// {
-//     "currency": "NGN",
-//     "amount": 9000,
-//     "cardDetails": {
-//         "cardNo": "5531886652142950",
-//         "cardUsername": "Gary Neville",
-//         "cardCVV": "564",
-//         "cardExp": "09/32",
-//         "cardPIN": "3310",
-//         "email": "akuybe@gmail.com"
-//     }
-// }
-
 import RESTClient from "../config/client";
 
 export const WALLET_FUND_ENDPOINT = "/wallet/wallet/fund";
+export const WALLETS_ENDPOINT = "/wallet/wallets";
+
 
 export const fundWallet = async(currency, amount, cardDetails, client=RESTClient) => {
     try{
@@ -21,5 +10,15 @@ export const fundWallet = async(currency, amount, cardDetails, client=RESTClient
         return response.data;
     }catch(e){
         throw Error("Wallet fund request failed");
+    }
+}
+
+export const getWallets = async(client=RESTClient) => {
+    try{
+        const response = await client.get(WALLETS_ENDPOINT);
+        return response.data;
+    }catch(e){
+        console.log(e);
+        throw Error("Failed to retrieve wallets information");
     }
 }
