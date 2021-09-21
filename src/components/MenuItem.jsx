@@ -40,7 +40,6 @@ const MenuItem = ({ children, ...otherProps }) => {
         <AntdMenuItem
             {...otherProps} className="ant-menu-item"
             renderItem={(siderCollapsed) => {
-                console.log({ siderCollapsed });
                 return <li><Row>
                     {siderCollapsed && <><Col sm={4} md={4} lg={4} xl={4} xxl={4} style={{paddingTop:5}}>
                         {icon}

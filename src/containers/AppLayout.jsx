@@ -14,6 +14,7 @@ import { CogOutline, HomeOutline, WalletOutline, CashOutline } from "react-ionic
 import { useDispatch } from "react-redux";
 import { fetchUserWalletsAction } from "../stores/actions";
 import { useSelector } from "react-redux";
+import { transformWalletData } from "../utils";
 
 const { Content, Sider, Header } = Layout;
 
@@ -50,7 +51,7 @@ const AppSiderStyle = createGlobalStyle`
     min-height: 100vh !important;
     overflow-y: scroll;
 }
-`
+`;
 
 export default (Component) => {
 
@@ -93,7 +94,7 @@ export default (Component) => {
         },[walletsState])
 
 
-        const DefaultWalletBalanceCard = withDataProvider(BalanceCard, () => state, (source) => source.wallets[0], (value) => ({ balance: { ...value, currency: "NGN" } }));
+        const DefaultWalletBalanceCard = withDataProvider(BalanceCard, () => useSelector(state => state.wallets), (source) => ({...source.wallets[source.defaultWalletId], balance: source.balances[source.defaultWalletId]}), (useSelector(state => state.wallets.wallets)).length > 0, transformWalletData);
 
         return (
 

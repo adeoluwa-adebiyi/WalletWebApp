@@ -3,24 +3,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import BalanceCard from "./BalanceCard";
 
-const Wallet = ({ walletId, currency, ...otherProps }) => {
-
-
-    const [walletData, setWalletData] = useState({
-        fetched: false,
-        balance: 0.00,
-        currencySymbol: "₦"
-    });
-
-    useEffect(() => {
-        setTimeout(() => {
-            setWalletData({
-                fetched: true,
-                balance: 637000.50,
-                currencySymbol: "₦"
-            })
-        }, 5000);
-    }, [])
+const Wallet = ({ walletData, fetched, ...otherProps }) => {
 
     return (
         <Card title={null} style={{
@@ -32,22 +15,22 @@ const Wallet = ({ walletId, currency, ...otherProps }) => {
         <Row style={{ maxHeight: 200, 
             // padding:20, 
             boxSizing:"border-box" }} gutter={0}>
-            {!walletData.fetched && <Skeleton/>}
-            {walletData.fetched && <Col span={24}>
+            {!fetched && <Skeleton/>}
+            {fetched && <Col span={24}>
                 <Row style={{marginBottom:10}}>
                     <Col span={4}>
                         {/* <h3 style={{color:"red", fontFamily:"Times New Roman", fontWeight:"bold"}}>{currency}</h3> */}
                     </Col>
                     <Col span={20}>
                         <Row align="end">
-                            <Link to={`/dashboard/wallets/fund/${walletId}`}>
+                            <Link to={`/dashboard/wallets/fund/${walletData.id}`}>
                                 <Button>Fund</Button>
                             </Link>
                         </Row>
                     </Col>
                 </Row>
 
-                <BalanceCard cardStyles={{background:"transparent", border: "none"}} balance={{balance: walletData.balance, currencySymbol: walletData.currencySymbol}}/>
+                <BalanceCard cardStyles={{background:"transparent", border: "none"}} balance={walletData.balance}/>
             </Col>}
         </Row>
         </Card>
