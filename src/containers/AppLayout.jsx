@@ -9,7 +9,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import { useHistory } from "react-router-dom";
 import BalanceCard from "../components/BalanceCard";
 import withDataProvider from "../components/withDataProvider";
-import { NAIRA_SYMBOL } from "../config/data";
+import { AUTH_TOKEN_KEY, NAIRA_SYMBOL } from "../config/data";
 import { CogOutline, HomeOutline, WalletOutline, CashOutline, SendOutline, AirplaneOutline, PaperPlaneOutline } from "react-ionicons";
 import { useDispatch } from "react-redux";
 import { fetchUserWalletsAction, setWalletFundDetails } from "../stores/actions";
@@ -165,7 +165,10 @@ export default (Component) => {
                                     </NavLink>
                                 </MenuItem>
                                 <div style={{ display: "flex", flexDirection: "column", flex: 10, justifyContent: "flex-end", alignSelf: "stretch" }}>
-                                    <MenuItem icon={<ExitOutline
+                                    <MenuItem onClick={()=>{
+                                        sessionStorage.removeItem(AUTH_TOKEN_KEY);
+                                        window.location.reload();
+                                    }} icon={<ExitOutline
                                         // color={'#00000'}
                                         height="20px"
                                         width="20px"
