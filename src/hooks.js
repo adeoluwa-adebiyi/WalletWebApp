@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { transformWalletData } from "./utils";
 import { useDispatch } from "react-redux";
-import { fetchUserWalletsAction } from "./stores/actions";
+import { fetchUserWalletsAction, setWalletFundDetails } from "./stores/actions";
 import { useEffect, useState } from "react";
 
 export const useWallets = () => {
@@ -11,7 +11,12 @@ export const useWallets = () => {
         dispatch(fetchUserWalletsAction());
     }, []);
 
-    const walletFetched = useSelector(state => state.wallets.walletsAndBalancesfetched);
+
+    const fundWallet = (walletId="") => {
+        dispatch(setWalletFundDetails(walletId, true));
+    }
+
+    const walletFetched = useSelector(state => state.wallets.walletsAndBalancesFetched);
     useEffect(() => {
         setWalletsFetched(walletFetched)
         console.log({walletFetched});
@@ -26,5 +31,5 @@ export const useWallets = () => {
         balance: walletsState.balances[walletsState.defaultWalletId]
     });
     const walletData = walletsState.wallets.map((wallet, index) => ({ ...wallet, balance: walletsState.balances[wallet.id] })).map(transformWalletData);
-    return { walletData, defaultWallet, fetched };
+    return { walletData, defaultWallet, fetched: walletFetched, walletsState, fundWallet };
 }

@@ -1,6 +1,12 @@
-import { SET_DEFAULT_WALLET, SET_WALLETS, SET_WALLETS_AND_BALANCES } from "./actions";
+import { SET_DEFAULT_WALLET, SET_WALLETS, SET_WALLETS_AND_BALANCES, SET_WALLET_FUND_DETAILS } from "./actions";
 
-export default  (state={wallets:[], balances:{}, defaultWalletId:null, walletsAndBalancesFetched: false}, action) => {
+export default  (state={
+    wallets:[], 
+    balances:{}, 
+    defaultWalletId:null,
+    walletsAndBalancesFetched: false,
+    walletFund: null
+}, action) => {
     switch(action.type){
 
         case SET_WALLETS:{
@@ -16,6 +22,11 @@ export default  (state={wallets:[], balances:{}, defaultWalletId:null, walletsAn
         case SET_DEFAULT_WALLET:{
             const { walletId } = action.payload;
             return {...state, defaultWalletId: walletId};
+        }
+
+        case SET_WALLET_FUND_DETAILS:{
+            const { walletId, walletFundModalVisible } = action.payload;
+            return {...state, walletFund:{walletId, walletFundModalVisible}};
         }
 
         default:

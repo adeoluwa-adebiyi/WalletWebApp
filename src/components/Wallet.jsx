@@ -1,9 +1,17 @@
-import { Col, Row, Button, Spin, Skeleton, Card } from "antd"
+import { Col, Row, Spin, Skeleton, Card } from "antd";
+import Button from "../components/Button";
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { useWallets } from "../hooks";
 import BalanceCard from "./BalanceCard";
 
 const Wallet = ({ walletData, fetched, ...otherProps }) => {
+
+    const { fundWallet } = useWallets();
+
+    const openWalletFundModal = () => {
+        fundWallet(walletData.id);
+    }
 
     return (
         <Card title={null} style={{
@@ -23,9 +31,9 @@ const Wallet = ({ walletData, fetched, ...otherProps }) => {
                     </Col>
                     <Col span={20}>
                         <Row align="end">
-                            <Link to={`/dashboard/wallets/fund/${walletData.id}`}>
-                                <Button>Fund</Button>
-                            </Link>
+                            {/* <Link to={`/dashboard/wallets/fund/${walletData.id}`}> */}
+                                <div width="100px"><Button style={{color:"#fff"}} onClick={openWalletFundModal}>Fund</Button></div>
+                            {/* </Link> */}
                         </Row>
                     </Col>
                 </Row>

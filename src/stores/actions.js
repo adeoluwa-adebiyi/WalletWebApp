@@ -3,6 +3,7 @@ export const FETCH_USER_WALLETS = "FETCH_USER_WALLETS";
 export const SET_WALLETS_AND_BALANCES = "SET_WALLETS_AND_BALANCES";
 export const SET_WALLETS = "SET_WALLETS";
 export const SET_DEFAULT_WALLET = "SET_DEFAULT_WALLET";
+export const SET_WALLET_FUND_DETAILS = "SET_WALLET_FUND_DETAILS";
 
 export const setLogin = (status) => {
     return {
@@ -37,5 +38,15 @@ export const setDefaultWallet = (walletId) => {
     return {
         type: SET_DEFAULT_WALLET,
         payload: {walletId}
+    }
+}
+
+export const setWalletFundDetails = (walletId, walletFundModalVisible) => {
+    return {
+        type: SET_WALLET_FUND_DETAILS,
+        payload: {
+            walletId,
+            walletFundModalVisible
+        }
     }
 }

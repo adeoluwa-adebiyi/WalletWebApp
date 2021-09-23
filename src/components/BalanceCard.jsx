@@ -7,7 +7,9 @@ const balanceTitleStyle = {
     fontSize: "1.2em"
 }
 
-const cardStyle = { background: "linear-gradient(127deg, rgba(253,115,156,1) 30%, rgba(252,146,82,1) 54%)", padding: 0, borderRadius: "10px" };
+export const OrangeRedYellowGradient = "linear-gradient(127deg, rgba(253,115,156,1) 30%, rgba(252,146,82,1) 54%)";
+
+const cardStyle = { background: OrangeRedYellowGradient, padding: 0, borderRadius: "10px" };
 
 const balanceStyle = { fontSize: "1.8em", fontWeight: "bolder", color: "#ffffff", padding: 0, margin: 0, textAlign:"end" };
 

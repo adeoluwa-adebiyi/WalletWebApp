@@ -4,7 +4,7 @@ import { useForm } from "antd/lib/form/Form";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
-const WalletFundRequestForm = ({ onFinish, isSubmitting, disabled, ...otherProps }) => {
+const WalletTransferRequestForm = ({ onFinish, isSubmitting, handleOnSearch, disabled=false, defaultValues, ...otherProps }) => {
 
     const [form] = useForm();
 
@@ -15,15 +15,24 @@ const WalletFundRequestForm = ({ onFinish, isSubmitting, disabled, ...otherProps
     return (
         <Form
             layout="vertical"
+            initialValues={defaultValues}
             form={form}
             onFinish={onFinish}>
             <Form.Item style={{display:"none"}} name="walletId" required={true}>
-                <Input type="hidden" value={id} />
+                <Input type="hidden" value={id} {...{disabled}} />
             </Form.Item>
             <Row>
                 <Col span={24}>
                     <Form.Item name="amount" required={true} label="Amount">
                         <Input type="number" {...{disabled}} />
+                    </Form.Item>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col span={24}>
+                    <Form.Item name="username" required={true} label="User">
+                        <Input type="search" onChange={handleOnSearch} {...{disabled}} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -39,7 +48,7 @@ const WalletFundRequestForm = ({ onFinish, isSubmitting, disabled, ...otherProps
             {disabled?null:<Row>
                 <Col span={24}>
                     {!isSubmitting && <Form.Item name="currency" required={true}>
-                        <Button type="primary" htmlType="submit">Proceed with fund</Button>
+                        <Button type="primary" htmlType="submit">Proceed with transfer</Button>
                     </Form.Item>}
                     {isSubmitting && <Row align="middle">
                             <Spin/>
@@ -51,4 +60,4 @@ const WalletFundRequestForm = ({ onFinish, isSubmitting, disabled, ...otherProps
     )
 }
 
-export default WalletFundRequestForm;
+export default WalletTransferRequestForm;

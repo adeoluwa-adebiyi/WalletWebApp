@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu, Row, Col, Button } from "antd";
+import { Layout, Menu, Row, Col, Button, Card, Spin } from "antd";
 import MenuItem from "../components/MenuItem";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,11 +10,16 @@ import { useHistory } from "react-router-dom";
 import BalanceCard from "../components/BalanceCard";
 import withDataProvider from "../components/withDataProvider";
 import { NAIRA_SYMBOL } from "../config/data";
-import { CogOutline, HomeOutline, WalletOutline, CashOutline } from "react-ionicons";
+import { CogOutline, HomeOutline, WalletOutline, CashOutline, SendOutline, AirplaneOutline, PaperPlaneOutline } from "react-ionicons";
 import { useDispatch } from "react-redux";
-import { fetchUserWalletsAction } from "../stores/actions";
+import { fetchUserWalletsAction, setWalletFundDetails } from "../stores/actions";
 import { useSelector } from "react-redux";
 import { transformWalletData } from "../utils";
+import { useWallets } from "../hooks";
+import WalletFundModal from "./wallets/WalletFundModal";
+import { ExitOutline } from "react-ionicons";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const { Content, Sider, Header } = Layout;
 
@@ -71,15 +76,19 @@ export default (Component) => {
 
         const dispatch = useDispatch();
 
-        const fetchWallets = async() => {
+        const fetchWallets = async () => {
             dispatch(fetchUserWalletsAction());
         }
 
-        const walletsState = useSelector(state=>state.wallets);
+        const { defaultWallet, fetched, walletsState } = useWallets();
 
         useEffect(() => {
             setActiveKey(history.location.pathname);
         }, [history.location.pathname]);
+
+        const closeFundWalletModal = () => {
+            dispatch(setWalletFundDetails(null, null));
+        }
 
         useEffect(() => {
             window.addEventListener("resize", (event) => {
@@ -88,25 +97,33 @@ export default (Component) => {
             fetchWallets();
         }, []);
 
-        useEffect(()=>{
-            console.log("WALLET_STATE:");
-            console.log(walletsState);
-        },[walletsState])
-
-
-        const DefaultWalletBalanceCard = withDataProvider(BalanceCard, () => useSelector(state => state.wallets), (source) => ({...source.wallets[source.defaultWalletId], balance: source.balances[source.defaultWalletId]}), (useSelector(state => state.wallets.wallets)).length > 0, transformWalletData);
+        // const DefaultWalletBalanceCard = withDataProvider(BalanceCard, () => useSelector(state => state.wallets), (source) => ({...source.wallets[source.defaultWalletId], balance: source.balances[source.defaultWalletId]}), (useSelector(state => state.wallets.wallets)).length > 0, transformWalletData);
 
         return (
 
             <Layout style={mainLayoutStyle}>
+                {<WalletFundModal visible={walletsState?.walletFund?.walletFundModalVisible ?? false} closeModal={closeFundWalletModal} />}
                 <AppSiderStyle />
+                <ToastContainer
+                    position="top-right"
+                    // autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
+                {/* Same as */}
+                <ToastContainer />
                 <Layout>
-                    {true &&
-                        <Sider collapsed={windowWidth < 991} style={{ maxWidth: "300px" }}>
+                    {windowWidth >= 991 &&
+                        <Sider style={{ maxWidth: "300px" }}>
 
-                            <DefaultWalletBalanceCard cardStyles={{ boxShadow: "1px 3px 10px #ccc" }} />
+                            {!fetched ? <Card><Spin /></Card> : <BalanceCard balance={defaultWallet.balance} />}
 
-                            <Menu style={{ display: "flex", flexDirection: "column", flex: 1, alignSelf: "stretch", height: "80%", paddingTop:"10%" }}
+                            <Menu style={{ display: "flex", flexDirection: "column", flex: 1, alignSelf: "stretch", height: "80%", paddingTop: "10%" }}
                                 activeKey={activeKey}
                                 selectable={true}
                                 defaultSelectedKeys={[activeKey]}>
@@ -138,9 +155,22 @@ export default (Component) => {
                                         Transactions
                                     </NavLink>
                                 </MenuItem>
+                                <MenuItem icon={<PaperPlaneOutline
+                                    // color={'#00000'}
+                                    height="20px"
+                                    width="20px"
+                                />} title="Send" key="/dashboard/send">
+                                    <NavLink to="/dashboard/send">
+                                        Send
+                                    </NavLink>
+                                </MenuItem>
                                 <div style={{ display: "flex", flexDirection: "column", flex: 10, justifyContent: "flex-end", alignSelf: "stretch" }}>
-                                    <MenuItem icon={<FontAwesomeIcon icon={["fa", "sign-out-alt"]} />} title="Sign out">
-                                        Signout
+                                    <MenuItem icon={<ExitOutline
+                                        // color={'#00000'}
+                                        height="20px"
+                                        width="20px"
+                                    />} title="Sign Out">
+                                        Sign Out
                                     </MenuItem>
                                 </div>
 
